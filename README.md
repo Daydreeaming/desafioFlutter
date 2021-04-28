@@ -1,6 +1,6 @@
-# desafioflutter
+# Desafio Flutter
 
-A new Flutter project.
+Aplicativo criado por Lucas Campos Vilasboas Dantas, vulgo Daydreaming, para o curso de Flutter da Cubos Academy.
 
 ## Getting Started
 
