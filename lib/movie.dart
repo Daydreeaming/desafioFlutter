@@ -5,7 +5,7 @@ class Movie {
 
   Movie.fromJson(Map<String, dynamic> json) {
     title = json['title'];
-    urlImage = json['poster_path'];
+    urlImage = 'https://image.tmdb.org/t/p/w300' + json['poster_path'];
     releaseDate = json['release_date'];
   }
 }
