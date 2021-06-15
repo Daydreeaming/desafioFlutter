@@ -1,5 +1,6 @@
+import 'package:desafioflutter/informationMovie_view.dart';
 import 'package:flutter/material.dart';
-import 'package:desafioflutter/moviel_view.dart';
+import 'package:desafioflutter/movie_view_page1.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,6 +14,9 @@ class MyApp extends StatelessWidget {
       title: 'MovieApp',
       debugShowCheckedModeBanner: false,
       home: MovieApp(),
+      routes: {
+        'informationsFilm' : (context) => InformationMovie()
+      },
     );
   }
 }

@@ -2,7 +2,7 @@ import 'package:desafioflutter/components/loading.dart';
 import 'package:desafioflutter/components/movieCard.dart';
 import 'package:flutter/material.dart';
 import 'package:desafioflutter/movie.dart';
-import 'package:desafioflutter/movie_controller.dart';
+import 'package:desafioflutter/movie_viewModel.dart';
 import 'package:flutter/cupertino.dart';
 
 class MovieApp extends StatefulWidget {
@@ -11,7 +11,13 @@ class MovieApp extends StatefulWidget {
 }
 
 class _MovieAppState extends State<MovieApp> {
-  final controller = MovieController();
+  final viewModel = MovieViewModel();
+
+  @override
+  void initState() {
+    super.initState();
+    viewModel.loadMovie();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +33,10 @@ class _MovieAppState extends State<MovieApp> {
             child: Container(
               width: double.infinity,
               decoration: backgroundApp(),
-              child: FutureBuilder<List<Movie>>(
-                future: controller.loadMovie(),
+              child: StreamBuilder<List<Movie>>(
+                stream: viewModel.streamLista.stream,
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState != ConnectionState.done) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
                     return Loading();
                   }
 
