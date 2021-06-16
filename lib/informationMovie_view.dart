@@ -1,9 +1,8 @@
-import 'package:desafioflutter/components/loading.dart';
-import 'package:desafioflutter/components/movieCard.dart';
-import 'package:flutter/material.dart';
 import 'package:desafioflutter/movie.dart';
+import 'package:flutter/material.dart';
 import 'package:desafioflutter/movie_viewModel.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 
 class InformationMovie extends StatefulWidget {
   @override
@@ -11,97 +10,125 @@ class InformationMovie extends StatefulWidget {
 }
 
 class InformationMovieState extends State<InformationMovie> {
-  final viewModel = MovieViewModel();
-
   @override
   Widget build(BuildContext context) {
+    final movie = ModalRoute.of(context).settings.arguments as Movie;
+
     return Scaffold(
-      body: Column(
+      body: Stack(
         children: [
-          Expanded(
-            child: Container(
-              width: double.infinity,
-              decoration: backgroundApp(),
-              child: Column(
-                children: [
-                  Stack(
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * 0.75,
+                  child: Image.network(
+                    movie.urlImage,
+                    fit: BoxFit.fill,
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: Text(
+                    movie.title,
+                    style: TextStyle(fontSize: 24),
+                  ),
+                ),
+                Container(
+                  decoration: backgroundApp(),
+                  child: Column(
                     children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height * 0.65,
-                        color: Colors.red,
-                      ),
-                      Positioned(
-                        width: 100,
-                        height: 100,
-                        top: 20,
-                        left: 20,
-                        child: MaterialButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: Icon(
-                            Icons.arrow_back,
-                            color: Colors.white,
-                            size: 20,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.only(top: 30),
+                            child: Text(
+                              '${movie.releaseDate}',
+                              style:
+                                  TextStyle(fontSize: 24, color: Colors.white),
+                            ),
                           ),
-                          shape: CircleBorder(),
-                          color: Colors.white12,
+                          Container(
+                            padding: EdgeInsets.only(top: 30),
+                            child: Column(
+                              children: [
+                                Text(
+                                  '${movie.voteAverage}',
+                                  style: TextStyle(
+                                      fontSize: 24, color: Colors.white),
+                                ),
+                                Text(
+                                  'score',
+                                  style: TextStyle(
+                                      fontSize: 24, color: Colors.white),
+                                )
+                              ],
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(top: 30),
+                            child: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  print(movie.favorite);
+                                  print('amigão?');
+                                  if (movie.favorite) {
+                                    movie.favorite = false;
+                                    return;
+                                  }
+                                  movie.favorite = true;
+                                });
+                              },
+                              child: movie.favorite == true
+                                  ? Icon(Icons.star, color: Colors.yellow)
+                                  : Icon(Icons.star, color: Colors.white),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Container(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                        child: Text(
+                          '${movie.overview}',
+                          style: TextStyle(fontSize: 24, color: Colors.white),
+                          textAlign: TextAlign.justify,
                         ),
                       ),
                     ],
                   ),
-                  Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.only(top: 30),
-                          child: Text('Xablau 1'),
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(top: 30),
-                          child: Text('Xablau 2'),
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(top: 30),
-                          child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                if (viewModel.favorite) {
-                                  viewModel.favorite = false;
-                                  return;
-                                }
-                                viewModel.favorite = true;
-                              });
-                            },
-                            child: viewModel.favorite == true
-                                ? Icon(Icons.star, color: Colors.yellow)
-                                : Icon(Icons.star, color: Colors.white),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SingleChildScrollView(
-                    padding: EdgeInsets.only(top: 20),
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          child: Text(
-                            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris sed venenatis est. Cras ac consequat massa. Fusce quis lacus non nulla venenatis elementum sit amet in orci. Nullam sit amet vehicula orci. Duis vitae accumsan magna. Fusce id tortor a erat condimentum euismod. Sed nibh eros, blandit id risus eu, sollicitudin auctor arcu. Nullam dapibus ac enim gravida pharetra. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.',
-                            style: TextStyle(fontSize: 17),
-                            textAlign: TextAlign.justify,
-                          ),
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
+                )
+              ],
             ),
           ),
+          Positioned(
+            top: 20,
+            left: 20,
+            child: iconButtonBack(context),
+          ),
         ],
+      ),
+    );
+  }
+
+  Material iconButtonBack(BuildContext context) {
+    return Material(
+      type: MaterialType.circle,
+      color: Colors.white30,
+      child: IconButton(
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        icon: Icon(
+          Icons.arrow_back,
+          color: Colors.white,
+          size: 20,
+        ),
+        color: Colors.black,
+        highlightColor: Colors.grey.withOpacity(0.6),
+        splashRadius: 20,
       ),
     );
   }
@@ -110,7 +137,7 @@ class InformationMovieState extends State<InformationMovie> {
 BoxDecoration backgroundApp() {
   return BoxDecoration(
     gradient: LinearGradient(
-        colors: [Colors.blue, Colors.pink],
+        colors: [Colors.black.withOpacity(1), Color(0xff580321)],
         begin: Alignment.bottomRight,
         end: Alignment.topLeft,
         stops: [0.2, 0.6]),

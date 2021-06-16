@@ -4,7 +4,6 @@ import 'dart:async';
 
 class MovieViewModel {
   final _model = MovieModel();
-  bool favorite = false;
 
   Future<List<Movie>> get movie => _model.movie;
 

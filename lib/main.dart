@@ -11,12 +11,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      // supportedLocales: [const Locale('pt', 'BR')],
       title: 'MovieApp',
       debugShowCheckedModeBanner: false,
       home: MovieApp(),
-      routes: {
-        'informationsFilm' : (context) => InformationMovie()
-      },
+      routes: {'informationsFilm': (context) => InformationMovie()},
     );
   }
 }

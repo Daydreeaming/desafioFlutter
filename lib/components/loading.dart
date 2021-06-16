@@ -14,15 +14,11 @@ class Loading extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          CircularProgressIndicator(),
           Text(
             'Loading...',
             style: TextStyle(fontSize: 40, color: Colors.black),
           ),
-          Image.network(
-              'https://media.giphy.com/media/12MgUpnxEq3ypy/giphy.gif',
-              width: 350,
-              height: 250,
-              fit: BoxFit.cover)
         ],
       ),
     );

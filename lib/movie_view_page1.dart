@@ -69,10 +69,11 @@ class _MovieAppState extends State<MovieApp> {
   BoxDecoration backgroundApp() {
     return BoxDecoration(
       gradient: LinearGradient(
-          colors: [Colors.blue, Colors.pink],
-          begin: Alignment.bottomRight,
-          end: Alignment.topLeft,
-          stops: [0.2, 0.6]),
+        colors: [Colors.black.withOpacity(1), Color(0xff580321)],
+        begin: Alignment.bottomRight,
+        end: Alignment.topLeft,
+        stops: [0.2, 0.6],
+      ),
     );
   }
 }
@@ -83,10 +84,7 @@ ListView buildListView(AsyncSnapshot<List<Movie>> snapshot) {
     itemCount: snapshot.data.length,
     itemBuilder: (context, index) => Container(
       margin: EdgeInsets.only(bottom: 18),
-      child: MovieCard(
-          releaseDate: '${snapshot.data[index].releaseDate}',
-          urlImage: snapshot.data[index].urlImage,
-          title: '${snapshot.data[index].title}'),
+      child: MovieCard(movie: snapshot.data[index]),
     ),
   );
 }
