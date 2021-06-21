@@ -1,13 +1,17 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:desafioflutter/movie.dart';
+import 'package:desafioflutter/Models/movie.dart';
 
 class API {
-  Future<List<Movie>> fetchMovie() async {
+  Future<List<Movie>> fetchMovie(int page) async {
+
     final response = await http.get(Uri.https(
       'api.themoviedb.org',
       '/3/movie/upcoming',
-      {'api_key': 'a5bc05fb630c9b7fdc560033345fa13e'},
+      {
+        'api_key': 'a5bc05fb630c9b7fdc560033345fa13e',
+        'page' : page.toString(),
+      },
     ));
 
     if (response.statusCode == 200) {

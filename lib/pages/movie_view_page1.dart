@@ -1,8 +1,8 @@
 import 'package:desafioflutter/components/loading.dart';
 import 'package:desafioflutter/components/movieCard.dart';
 import 'package:flutter/material.dart';
-import 'package:desafioflutter/movie.dart';
-import 'package:desafioflutter/movie_controller.dart';
+import 'package:desafioflutter/Models/movie.dart';
+import 'package:desafioflutter/DetailMovie/movie_viewModel.dart';
 import 'package:flutter/cupertino.dart';
 
 class MovieApp extends StatefulWidget {
@@ -11,7 +11,14 @@ class MovieApp extends StatefulWidget {
 }
 
 class _MovieAppState extends State<MovieApp> {
-  final controller = MovieController();
+  final viewModel = MovieViewModel();
+
+  @override
+  void initState() {
+    super.initState();
+    viewModel.loadMovie();
+    
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +34,10 @@ class _MovieAppState extends State<MovieApp> {
             child: Container(
               width: double.infinity,
               decoration: backgroundApp(),
-              child: FutureBuilder<List<Movie>>(
-                future: controller.loadMovie(),
+              child: StreamBuilder<List<Movie>>(
+                stream: viewModel.streamLista.stream,
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState != ConnectionState.done) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
                     return Loading();
                   }
 
@@ -63,26 +70,29 @@ class _MovieAppState extends State<MovieApp> {
   BoxDecoration backgroundApp() {
     return BoxDecoration(
       gradient: LinearGradient(
-          colors: [Colors.blue, Colors.pink],
-          begin: Alignment.bottomRight,
-          end: Alignment.topLeft,
-          stops: [0.2, 0.6]),
+        colors: [Colors.black.withOpacity(1), Color(0xff580321)],
+        begin: Alignment.bottomRight,
+        end: Alignment.topLeft,
+        stops: [0.2, 0.6],
+      ),
     );
   }
-}
 
-ListView buildListView(AsyncSnapshot<List<Movie>> snapshot) {
-  return ListView.builder(
-    padding: EdgeInsets.symmetric(vertical: 30, horizontal: 30),
-    itemCount: snapshot.data.length,
-    itemBuilder: (context, index) => Container(
-      margin: EdgeInsets.only(bottom: 18),
-      child: MovieCard(
-          releaseDate: '${snapshot.data[index].releaseDate}',
-          urlImage: snapshot.data[index].urlImage,
-          title: '${snapshot.data[index].title}'),
-    ),
-  );
+  ListView buildListView(AsyncSnapshot<List<Movie>> snapshot) {
+    return ListView.builder(
+      padding: EdgeInsets.symmetric(vertical: 30, horizontal: 30),
+      itemCount: snapshot.data.length,
+      itemBuilder: (context, index) {
+        if (index == snapshot.data.length - 5) {
+          viewModel.loadMovie();
+        }
+        return Container(
+          margin: EdgeInsets.only(bottom: 18),
+          child: MovieCard(movie: snapshot.data[index]),
+        );
+      },
+    );
+  }
 }
 
 Container buildListViewError(AsyncSnapshot<List<Movie>> snapshot) {
