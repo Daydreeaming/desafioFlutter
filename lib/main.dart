@@ -1,8 +1,9 @@
-import 'package:desafioflutter/informationMovie_view.dart';
+import 'package:desafioflutter/pages/information_Movie_view.dart';
 import 'package:flutter/material.dart';
-import 'package:desafioflutter/movie_view_page1.dart';
+import 'package:desafioflutter/pages/movie_view_page1.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
 

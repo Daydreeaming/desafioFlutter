@@ -11,12 +11,19 @@ class Movie {
       this.voteAverage, this.favorite);
 
   Movie.fromJson(Map<String, dynamic> json) {
+    var postPath = json['poster_path'];
     id = json['id'];
     title = json['title'];
-    urlImage = 'https://image.tmdb.org/t/p/w300' + json['poster_path'];
+    urlImage = postPath == null
+        ? 'https://e3z7c6v7.rocketcdn.me/blog/wp-content/uploads/2019/02/274034-erro-de-http-wordpress-como-corrigir.jpg.webp'
+        : 'https://image.tmdb.org/t/p/w300' + postPath;
     releaseDate = json['release_date'];
     overview = json['overview'];
     voteAverage = json['vote_average'];
     favorite = false;
+  }
+
+  Map<String, dynamic> toMap() {
+    return {'id': id, 'favorite': favorite};
   }
 }

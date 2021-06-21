@@ -1,8 +1,8 @@
 import 'package:desafioflutter/components/loading.dart';
 import 'package:desafioflutter/components/movieCard.dart';
 import 'package:flutter/material.dart';
-import 'package:desafioflutter/movie.dart';
-import 'package:desafioflutter/movie_viewModel.dart';
+import 'package:desafioflutter/Models/movie.dart';
+import 'package:desafioflutter/DetailMovie/movie_viewModel.dart';
 import 'package:flutter/cupertino.dart';
 
 class MovieApp extends StatefulWidget {
@@ -17,6 +17,7 @@ class _MovieAppState extends State<MovieApp> {
   void initState() {
     super.initState();
     viewModel.loadMovie();
+    
   }
 
   @override
@@ -76,17 +77,22 @@ class _MovieAppState extends State<MovieApp> {
       ),
     );
   }
-}
 
-ListView buildListView(AsyncSnapshot<List<Movie>> snapshot) {
-  return ListView.builder(
-    padding: EdgeInsets.symmetric(vertical: 30, horizontal: 30),
-    itemCount: snapshot.data.length,
-    itemBuilder: (context, index) => Container(
-      margin: EdgeInsets.only(bottom: 18),
-      child: MovieCard(movie: snapshot.data[index]),
-    ),
-  );
+  ListView buildListView(AsyncSnapshot<List<Movie>> snapshot) {
+    return ListView.builder(
+      padding: EdgeInsets.symmetric(vertical: 30, horizontal: 30),
+      itemCount: snapshot.data.length,
+      itemBuilder: (context, index) {
+        if (index == snapshot.data.length - 5) {
+          viewModel.loadMovie();
+        }
+        return Container(
+          margin: EdgeInsets.only(bottom: 18),
+          child: MovieCard(movie: snapshot.data[index]),
+        );
+      },
+    );
+  }
 }
 
 Container buildListViewError(AsyncSnapshot<List<Movie>> snapshot) {

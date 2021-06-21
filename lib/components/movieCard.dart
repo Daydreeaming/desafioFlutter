@@ -1,4 +1,5 @@
-import 'package:desafioflutter/movie.dart';
+import 'package:desafioflutter/Models/movie.dart';
+import 'package:desafioflutter/pages/information_Movie_view.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 
@@ -11,7 +12,15 @@ class MovieCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, 'informationsFilm', arguments: movie);
+        // Navigator.pushNamed(context, 'informationsFilm', arguments: movie);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => InformationMovie(
+              movie: movie,
+            ),
+          ),
+        );
       },
       child: Stack(
         children: [
